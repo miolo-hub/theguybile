@@ -471,7 +471,7 @@ def main():
   <a id="daily-ref" href="#">&nbsp;</a>
   <div class="dact">
     <button class="chip" id="daily-random">{ICONS['dice']}<span>Another</span></button>
-    <button class="chip" id="daily-image">{ICONS['image']}<span>Make image</span></button>
+    <button class="chip" id="daily-image">{ICONS['share']}<span>Share</span></button>
   </div>
 </aside>
 <figure class="frontis"><img src="art/frontispiece.webp" width="560" height="840" loading="lazy" decoding="async"

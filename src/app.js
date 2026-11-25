@@ -313,7 +313,7 @@
         ul.innerHTML = refs.filter(function (r) { return by[r]; }).map(function (r) {
           var v = by[r];
           return '<li class="sv"><a href="' + v[1] + ".html#v" + r.replace(":", "-") + '"><span class="r">Guybile ' + r + " · " + escH(v[2]) +
-            "</span>" + escH(v[3]) + '</a><div class="svb"><button class="chip" data-img="' + r + '">Image</button><button class="chip" data-rm="' + r + '">Remove</button></div></li>';
+            "</span>" + escH(v[3]) + '</a><div class="svb"><button class="chip" data-img="' + r + '">Share</button><button class="chip" data-rm="' + r + '">Remove</button></div></li>';
         }).join("");
         ul.onclick = function (e) {
           var rm = e.target.closest("[data-rm]"), im = e.target.closest("[data-img]");
