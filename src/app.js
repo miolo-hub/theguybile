@@ -118,10 +118,10 @@
       say(on ? "Saved to thy verses" : "Removed from saved");
       deselect(); return;
     }
-    if (b.dataset.act === "image") {
+    if (b.dataset.act === "image" || (b.dataset.act === "share" && canShareFiles())) {
       var c = selected.cloneNode(true);
       c.querySelectorAll(".num, .by").forEach(function (n) { n.remove(); });
-      shareImage(c.textContent.trim(), ref, main.dataset.title || "");
+      shareImage(c.textContent.trim(), ref, main.dataset.title || "", url);
       deselect(); return;
     }
     if (b.dataset.act === "share" && navigator.share) {
@@ -193,12 +193,18 @@
     x.fillText(location.hostname && location.hostname !== "localhost" ? location.hostname.toUpperCase() : "GUYBILE.COM", W / 2, H - 110);
     return c;
   }
-  function shareImage(text, ref, chapter) {
+  function vlink(v) { return new URL(v[1] + ".html#v" + v[0].replace(":", "-"), location.href).href; }
+  function canShareFiles() {
+    try { return !!(navigator.canShare && typeof File === "function" &&
+      navigator.canShare({ files: [new File([""], "t.png", { type: "image/png" })] })); } catch (e) { return false; }
+  }
+  function shareImage(text, ref, chapter, link) {
+    link = link || location.origin;
     var c = drawVerse(text, ref, chapter), name = "guybile-" + ref.replace(":", "-") + ".png";
     c.toBlob(function (blob) {
       var file = typeof File === "function" ? new File([blob], name, { type: "image/png" }) : null;
       if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({ files: [file], title: "Guybile " + ref, text: "Guybile " + ref + " — " + location.origin }).catch(function () {});
+        navigator.share({ files: [file], title: "Guybile " + ref, text: "Guybile " + ref + " — " + link }).catch(function () {});
       } else {
         var a = d.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
         d.body.appendChild(a); a.click(); a.remove();
@@ -278,7 +284,7 @@
         show(v, "The Guybile has spoken");
       });
     }).catch(function () { $("daily").hidden = true; });
-    $("daily-image").addEventListener("click", function () { if (shown) shareImage(shown[3], shown[0], shown[2]); });
+    $("daily-image").addEventListener("click", function () { if (shown) shareImage(shown[3], shown[0], shown[2], vlink(shown)); });
   }
 
   /* ---------- Saved page ---------- */
@@ -298,7 +304,7 @@
         ul.onclick = function (e) {
           var rm = e.target.closest("[data-rm]"), im = e.target.closest("[data-img]");
           if (rm) { toggleSaved(rm.dataset.rm); renderSaved(); }
-          if (im) { var v = by[im.dataset.img]; shareImage(v[3], v[0], v[2]); }
+          if (im) { var v = by[im.dataset.img]; shareImage(v[3], v[0], v[2], vlink(v)); }
         };
       });
     };
