@@ -45,6 +45,10 @@ An optional opening paragraph.
 - `- item` and `1. item` make lists, and `| a | b |` lines make a table.
 - To start a new chapter, add a file named with the next number (for example `30-pets.md`) and use `label: Chapter 30`.
 
+## Translate it
+
+Want The Guybile in Hindi, Telugu, Tamil, Spanish or any other language? Open the **Translate The Guybile** form under **Issues → New issue**, or read [`translations/README.md`](translations/README.md) for how files are stored.
+
 ## Thy rights and ours
 
 By sending a verse or edit, thou confirmest it is thine own words, and thou lettest The Guybile publish, edit and sell it as part of the book (including printed copies and merch). Thou art credited by the name thou givest. See [LICENSE](LICENSE).

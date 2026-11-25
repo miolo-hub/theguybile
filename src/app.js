@@ -118,6 +118,7 @@
       say(on ? "Saved to thy verses" : "Removed from saved");
       deselect(); return;
     }
+    if (b.dataset.act === "wa") { openWA(text + "\n" + url); track("wa-verse-" + ref); deselect(); return; }
     if (b.dataset.act === "image" || (b.dataset.act === "share" && canShareFiles())) {
       var c = selected.cloneNode(true);
       c.querySelectorAll(".num, .by").forEach(function (n) { n.remove(); });
@@ -194,6 +195,7 @@
     return c;
   }
   function vlink(v) { return new URL("v/" + v[0].replace(":", "-") + ".html", location.href).href; }
+  function openWA(msg) { window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener"); }
   function canShareFiles() {
     try { return !!(navigator.canShare && typeof File === "function" &&
       navigator.canShare({ files: [new File([""], "t.png", { type: "image/png" })] })); } catch (e) { return false; }
@@ -298,6 +300,7 @@
         show(v, "The Guybile has spoken");
       });
     }).catch(function () { $("daily").hidden = true; });
+    $("daily-wa").addEventListener("click", function () { if (shown) openWA("\u201c" + shown[3] + "\u201d\nGuybile " + shown[0] + "\n" + vlink(shown)); });
     $("daily-image").addEventListener("click", function () { if (shown) shareImage(shown[3], shown[0], shown[2], vlink(shown)); });
   }
 
@@ -431,6 +434,16 @@
   }
 
   /* ---------- Quiz ---------- */
+  var ARCH = {
+    1: "the one who shows up at 2 a.m. and asks no questions", 2: "the one who cancels at 7:58 and calls it a vibe check",
+    3: "the one who finishes the last slice and denies it", 6: "the one whose bank balance is a mystery",
+    8: "the one who says \u201cI\u2019m fine\u201d for three months", 9: "the one who has been starting Monday since 2019",
+    13: "the one who lives in the group chat", 14: "the one who is \u201cjust one more match\u201d from sleep",
+    15: "the one with a gadget for every problem except the problem", 16: "the one who plans the road trip and forgets the fuel",
+    18: "the one who doomscrolls instead of sleeping", 19: "the one who texts \u201chey\u201d and calls it a plan",
+    21: "the one who \u201cwill call this weekend\u201d since 2021", 22: "the one who types a reply and deletes it ten times",
+    23: "the one with a spreadsheet for everything", 27: "the one who apologises first, and means it"
+  };
   if (page === "quiz") {
     var Q = JSON.parse($("quiz-data").textContent), box = $("quiz"), score = {}, step = 0, last = 0;
     var esc_ = function (t) { var e = d.createElement("i"); e.textContent = t; return e.innerHTML; };
@@ -442,7 +455,7 @@
     box.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       if (b.id === "q-again") { score = {}; step = 0; ask(); return; }
-      if (b.id === "q-share") { var r = box._row; shareImage(r[3], r[0], r[2], vlink(r)); return; }
+      if (b.id === "q-share") { var r = box._row; shareImage("Thou art " + (ARCH[box._best] || "a brother of the Guybile") + ".", r[0], "My Guybile result \u00b7 " + r[2], new URL("quiz.html", location.href).href); return; }
       if (!b.classList.contains("opt")) return;
       last = Q[step][1][+b.dataset.i][1]; score[last] = (score[last] || 0) + 1; step++;
       if (step < Q.length) { ask(); return; }
@@ -451,13 +464,74 @@
       fetch("verses.json").then(function (r) { return r.json(); }).then(function (rows) {
         var pool = rows.filter(function (r) { return r[0].indexOf(best + ":") === 0; });
         var row = pool[Math.floor(Math.random() * pool.length)] || rows[0];
-        box._row = row;
-        box.innerHTML = '<p class="qn">The Guybile hath spoken. Thou hast broken</p><h2 class="qres"><a href="' + row[1] + '.html#v' + row[0].replace(":", "-") + '">Guybile ' + row[0] + '</a></h2>' +
+        box._row = row; box._best = best;
+        box.innerHTML = '<p class="qn">The Guybile hath spoken. Thou art</p><h2 class="qres">' + esc_((ARCH[best] || "a brother of the Guybile").replace(/^the one/, "The one")) + '</h2><p class="qn">Thou hast broken <a href="' + row[1] + '.html#v' + row[0].replace(":", "-") + '">Guybile ' + row[0] + '</a></p>' +
           '<blockquote>' + esc_(row[3]) + '</blockquote><p class="meta">' + esc_(row[2]) + '</p>' +
           '<div class="dact"><button class="chip" id="q-share">Share result</button><a class="chip" href="' + row[1] + '.html">Read the chapter</a><button class="chip" id="q-again">Take it again</button></div>';
       });
     });
     ask();
+  }
+
+
+  /* ---------- A verse for thy brother ---------- */
+  if (page === "brother") {
+    var T = JSON.parse($("traits-data").textContent), bout = $("b-out");
+    $("b-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = $("b-name").value.trim().replace(/\s+/g, " "), t = T[+d.querySelector('input[name="trait"]:checked').value];
+      if (!name) return;
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      fetch("verses.json").then(function (r) { return r.json(); }).then(function (rows) {
+        var pool = rows.filter(function (r) { return r[0].indexOf(t[2] + ":") === 0; }), row = pool[Math.floor(Math.random() * pool.length)] || rows[0];
+        var line = name + ", thou art the one who " + t[1] + ".";
+        var esc2 = function (x) { var i = d.createElement("i"); i.textContent = x; return i.innerHTML; };
+        bout.hidden = false;
+        bout.innerHTML = '<p class="qn">Written for ' + esc2(name) + '</p><blockquote>' + esc2(line) + '</blockquote>' +
+          '<p class="meta">And it is written: “' + esc2(row[3]) + '” · <a href="' + row[1] + '.html#v' + row[0].replace(":", "-") + '">Guybile ' + row[0] + '</a></p>' +
+          '<div class="dact"><button class="chip" id="b-share">Share</button><button class="chip" id="b-wa">WhatsApp</button><button class="chip" id="b-again">Another verse</button></div>';
+        bout._d = { line: line, row: row, name: name };
+        bout.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+    bout.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b || !bout._d) return;
+      var x = bout._d, link = new URL("brother.html", location.href).href;
+      if (b.id === "b-share") { track("share-brother"); shareImage(x.line, x.row[0], "A verse for " + x.name, link); }
+      if (b.id === "b-wa") { track("wa-brother"); openWA(x.line + "\n\nGuybile " + x.row[0] + ": “" + x.row[3] + "”\nWrite one for thy brother: " + link); }
+      if (b.id === "b-again") $("b-form").requestSubmit();
+    });
+  }
+
+  /* ---------- Swipe through verses ---------- */
+  if (page === "swipe") {
+    var box2 = $("swipe"), all = [], idx = 0, hint = $("swipe-hint");
+    var esc3 = function (x) { var i = d.createElement("i"); i.textContent = x; return i.innerHTML; };
+    var add = function (n) {
+      for (var k = 0; k < n && idx < all.length; k++, idx++) {
+        var v = all[idx], sec = d.createElement("section");
+        sec.className = "sw"; sec.dataset.i = idx;
+        sec.innerHTML = '<p class="sref">Guybile ' + esc3(v[0]) + '</p><blockquote>“' + esc3(v[3]) + '”</blockquote><p class="sch">' + esc3(v[2]) + '</p>' +
+          '<div class="sact"><button class="sbig" data-s="share">Share</button><button class="chip" data-s="wa">WhatsApp</button><button class="chip" data-s="save">Save</button></div>';
+        box2.appendChild(sec);
+      }
+    };
+    fetch("verses.json").then(function (r) { return r.json(); }).then(function (rows) {
+      all = rows.filter(function (r) { return r[3].length < 330 && r[1].indexOf("appendix") < 0; });
+      for (var i = all.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = all[i]; all[i] = all[j]; all[j] = t; }
+      add(12); box2.focus();
+    });
+    box2.addEventListener("scroll", function () {
+      if (hint) { hint.style.opacity = 0; }
+      if (box2.scrollTop + box2.clientHeight * 3 > box2.scrollHeight) add(10);
+    }, { passive: true });
+    box2.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-s]"); if (!b) return;
+      var v = all[+b.closest(".sw").dataset.i], url = vlink(v);
+      if (b.dataset.s === "share") { track("share-verse-" + v[0]); shareImage(v[3], v[0], v[2], url); }
+      if (b.dataset.s === "wa") { track("wa-verse-" + v[0]); openWA("“" + v[3] + "”\nGuybile " + v[0] + "\n" + url); }
+      if (b.dataset.s === "save") { say(toggleSaved(v[0]) ? "Saved to thy verses" : "Removed from saved"); }
+    });
   }
 
   /* ---------- Offline ---------- */

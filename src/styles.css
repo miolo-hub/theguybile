@@ -285,6 +285,27 @@ main { padding: 0 max(1.25rem, env(safe-area-inset-left)) 3rem max(1.25rem, env(
 .sharebros svg { width: 1.05rem; height: 1.05rem; }
 .linkbtn { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
 
+/* ---------- Brother verse, swipe ---------- */
+.traits { border: 0; padding: 0; margin: 0; display: grid; gap: .5rem; }
+.traits legend { font: 600 .9rem var(--sans); color: var(--ink-2); margin-bottom: .5rem; padding: 0; }
+.tr { display: block; cursor: pointer; }
+.tr input { position: absolute; opacity: 0; }
+.tr span { display: block; padding: .7rem 1rem; border: 1px solid var(--rule); border-radius: .7rem; background: var(--card); font: 400 1rem var(--serif); }
+.tr input:checked + span { border-color: var(--gold); background: var(--bg-2); box-shadow: inset 3px 0 0 var(--red); }
+.tr input:focus-visible + span { outline: 2px solid var(--gold); }
+.swipe-main { padding: 0; }
+.swipe { height: calc(100dvh - var(--bar)); overflow-y: auto; scroll-snap-type: y mandatory; overscroll-behavior: contain; outline: none; }
+.sw { height: calc(100dvh - var(--bar)); scroll-snap-align: start; scroll-snap-stop: always; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.5rem 1.4rem 2rem; position: relative; }
+.sw blockquote { margin: 0; max-width: 32rem; font-size: clamp(1.25rem, 1rem + 1.8vw, 1.9rem); line-height: 1.5; text-wrap: balance; }
+.sw .sref { font: 700 .8rem var(--sans); letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin: 0 0 1.2rem; }
+.sw .sch { font: .88rem var(--sans); color: var(--ink-2); margin: 1.1rem 0 0; }
+.sw .sact { display: flex; gap: .6rem; margin-top: 1.8rem; flex-wrap: wrap; justify-content: center; }
+.sw .sbig { appearance: none; border: 0; cursor: pointer; font: 600 1.05rem var(--sans); border-radius: 2rem; min-height: 3.2rem; padding: .8rem 1.8rem; background: var(--leather); color: var(--gilt); display: inline-flex; align-items: center; gap: .5rem; }
+.sw .sbig svg { width: 1.15rem; height: 1.15rem; }
+.swipe-hint { position: fixed; left: 0; right: 0; bottom: calc(.9rem + env(safe-area-inset-bottom)); text-align: center; font: 600 .78rem var(--sans); color: var(--ink-2); pointer-events: none; margin: 0; transition: opacity .4s; }
+.swipe-main ~ .foot, .swipe-main + .foot { display: none; }
+body:has(.swipe-main) .foot { display: none; }
+
 /* ---------- Old-book art (src/art) ---------- */
 [data-theme="paper"] body { background: var(--bg) url(art/paper.webp) 0 0 / 512px; }
 .cover { background:

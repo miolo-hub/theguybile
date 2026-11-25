@@ -303,6 +303,7 @@ def page(*, title, desc, body, css, where="", current="", toc_html="", canonical
   <button data-act="copy">{ICONS['copy']}Copy</button>
   <button data-act="save">{ICONS['save']}<span>Save</span></button>
   <button data-act="share">{ICONS['share']}Share</button>
+  <button data-act="wa">{ICONS['share']}WhatsApp</button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
@@ -343,6 +344,8 @@ def toc(chapters, appendices):
     items.append('<li><a href="saved.html"><span class="n">★</span>Saved verses</a></li>')
     items.append('<li><a href="credits.html"><span class="n">✎</span>The Authors</a></li>')
     items.append('<li><a href="about.html"><span class="n">i</span>Why \u201cGuybile\u201d?</a></li>')
+    items.append('<li><a href="swipe.html"><span class="n">\u21c5</span>Swipe verses</a></li>')
+    items.append('<li><a href="brother.html"><span class="n">@</span>A verse for thy brother</a></li>')
     items.append('<li><a href="oath.html"><span class="n">❦</span>Swear in a brother</a></li>')
     items.append('<li><a href="quiz.html"><span class="n">?</span>Which law didst thou break?</a></li>')
     items.append('</ul>')
@@ -471,6 +474,7 @@ def main():
   <div class="dact">
     <button class="chip" id="daily-random">{ICONS['dice']}<span>Another</span></button>
     <button class="chip" id="daily-image">{ICONS['share']}<span>Share</span></button>
+    <button class="chip" id="daily-wa">{ICONS['share']}<span>WhatsApp</span></button>
   </div>
 </aside>
 <figure class="frontis"><img src="art/frontispiece.webp" width="560" height="840" loading="lazy" decoding="async"
@@ -487,7 +491,9 @@ def main():
 <h2 class="sec">The Appendices</h2>
 <ul class="grid">{''.join(card(a) for a in appendices)}</ul>
 <h2 class="sec">For thy brothers</h2>
-<ul class="more"><li><a href="oath.html"><b>Swear in a brother</b><span>Make a Sworn Brother certificate to share or print.</span></a></li>
+<ul class="more"><li><a href="swipe.html"><b>Swipe verses</b><span>One verse at a time, full screen. Share the good ones.</span></a></li>
+<li><a href="brother.html"><b>A verse for thy brother</b><span>Type a name, pick a flaw, send it to him.</span></a></li>
+<li><a href="oath.html"><b>Swear in a brother</b><span>Make a Sworn Brother certificate to share or print.</span></a></li>
 <li><a href="quiz.html"><b>Which law didst thou break?</b><span>Five questions. One verse. No mercy.</span></a></li></ul>
 <section class="why">
   <h2 class="sec">Why \u201cGuybile\u201d?</h2>
@@ -556,6 +562,45 @@ def main():
     (DIST / "search.html").write_text(page(title="Search", desc="Search every verse of The Guybile.",
                                            body=search, css=css, toc_html=toc_html, canonical="search.html"))
 
+    # ---- a verse for thy brother
+    traits = [
+        ["Always late", "says \u201con my way\u201d from the shower", 2],
+        ["Cancels plans", "cancels at 7:58 and calls it a vibe check", 2],
+        ["Eats everything", "finishes the last slice and denies it", 3],
+        ["Money mystery", "pays the bill first and says \u201cI\u2019ll get the next one\u201d", 6],
+        ["Group chat ghost", "reads the chat at 3 a.m. and replies at noon with a meme", 13],
+        ["Gym someday", "has been starting on Monday since 2019", 9],
+        ["Dating app hero", "texts \u201chey\u201d and calls it a plan", 19],
+        ["Gives advice", "gives the best advice and follows none of it", 8],
+        ["Ride or die", "shows up at 2 a.m. and asks no questions", 1],
+    ]
+    brother = f"""<main id="main" data-page="brother"><div class="col">
+<header class="chead"><p class="kicker">For thy brother</p><h1>A verse for thy brother</h1><div class="orn"><span>Name him. Judge him. Send it.</span></div></header>
+<form class="form" id="b-form" autocomplete="off">
+  <label>His name<input id="b-name" maxlength="30" required placeholder="e.g. Rahul"></label>
+  <fieldset class="traits"><legend>What is he known for?</legend>
+  {''.join(f'<label class="tr"><input type="radio" name="trait" value="{i}"{" checked" if i == 0 else ""}><span>{esc(t[0])}</span></label>' for i, t in enumerate(traits))}
+  </fieldset>
+  <button class="primary" type="submit">Write his verse</button>
+  <p class="meta">The name stays on this device. Nothing is sent anywhere.</p>
+</form>
+<div id="b-out" class="quiz" hidden></div>
+<script type="application/json" id="traits-data">{_ld(traits)}</script>
+</div></main>
+{footer()}"""
+    (DIST / "brother.html").write_text(page(title="A verse for thy brother", desc="Type a friend's name, pick his flaw, and get a verse written for him.",
+                                            body=brother, css=css, toc_html=toc_html, canonical="brother.html"))
+    pages.append("brother.html")
+
+    # ---- swipe through verses
+    swipe = f"""<main id="main" data-page="swipe" class="swipe-main">
+<div id="swipe" class="swipe" tabindex="0" aria-label="Verses. Swipe or use the arrow keys."></div>
+<p class="swipe-hint" id="swipe-hint">Swipe up for the next verse ↑</p>
+</main>"""
+    (DIST / "swipe.html").write_text(page(title="Swipe verses", desc="Swipe through the verses of The Guybile, one at a time.",
+                                          body=swipe, css=css, toc_html=toc_html, canonical="swipe.html"))
+    pages.append("swipe.html")
+
     # ---- about: why Guybile
     about = f"""<main id="main" data-page="about"><div class="col content">
 <header class="chead"><p class="kicker">The name</p><h1>Why \u201cGuybile\u201d?</h1><div class="orn"><span>Say it: guy-bile</span></div></header>
@@ -563,6 +608,7 @@ def main():
 <p><strong>Why not just \u201cBible\u201d?</strong> Because the Bible already has a publisher, a few billion readers and a very good lawyer. This is a book for guys, and it should sound like one.</p>
 <p><strong>Why the \u201ci\u201d, and why does it spell \u201cbile\u201d?</strong> Because it is meant to. Bile is bitter, and so is honest advice. The best verses here start as a joke and end as a truth that stings a little: <em>funny on the surface, true underneath</em>. A misplaced letter also suits a book about men and their plans: close enough to look right, wrong enough to be funny.</p>
 <p><strong>Is it a religion?</strong> No. It borrows the voice of scripture for laughs and kindness, with no offence meant to any faith, and no one is asked to believe anything. Read a verse, argue with it, send it to a brother.</p>
+<p><strong>Is it in my language?</strong> Not yet. Want to translate it? {('<a href="https://github.com/' + REPO + '/issues/new?template=translation.yml">Offer to translate</a>.') if REPO else ''}</p>
 <p><strong>Is it finished?</strong> Never. Anyone can add a verse, and the maintainer decides what goes in. <a href="{suggest_url()}">Write the next one.</a></p>
 </div></main>
 {footer()}"""

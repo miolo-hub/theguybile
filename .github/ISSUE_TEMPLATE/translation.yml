@@ -1,0 +1,51 @@
+name: Translate The Guybile
+description: Offer to translate The Guybile into a new language, or add a language to an existing one.
+title: "Translation: "
+labels: ["translation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. A brother who reads in his own language is a brother who stays.
+
+        Translate the **spirit** and the humour, not only the words. A joke that does not land in your language should be replaced by one that does. The maintainer reviews every translation before it goes live.
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      description: Name it in English and in its own script, for example "Hindi / हिन्दी".
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: What wilt thou translate?
+      options:
+        - The whole book (I will do it in parts)
+        - A few chapters
+        - One chapter as a sample first
+        - I will check or improve an existing translation
+    validations:
+      required: true
+  - type: input
+    id: chapters
+    attributes:
+      label: Which chapters?
+      description: For example "Preamble, 1, 2, 13". Leave blank for the whole book.
+  - type: textarea
+    id: about
+    attributes:
+      label: About thee (optional)
+      description: Native speaker? Where is the language spoken? Any experience with translation?
+  - type: input
+    id: credit
+    attributes:
+      label: Credit (optional)
+      description: The name shown on the Authors page.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Agreement
+      options:
+        - label: The translation is my own work. I grant The Guybile the right to publish, edit and sell it, as described in the LICENSE.
+          required: true

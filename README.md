@@ -4,6 +4,8 @@
 
 The official home of The Guybile is **[theguybile.com](https://theguybile.com)**. This repository holds its book and website source. The 29 chapters and 3 appendices live as plain text in [`content/`](content). Anyone can suggest new verses (see [CONTRIBUTING.md](CONTRIBUTING.md)), and merged changes go live on theguybile.com automatically.
 
+Want it in thy language? **[Offer to translate](../../issues/new?template=translation.yml).**
+
 This repository is open for contributions, not for re-hosting. Please don't publish copies of the site elsewhere; send verses here instead.
 
 ## The website
