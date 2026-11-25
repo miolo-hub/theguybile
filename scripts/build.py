@@ -302,7 +302,6 @@ def page(*, title, desc, body, css, where="", current="", toc_html="", canonical
 <div class="vact" id="vact" role="toolbar" aria-label="Verse actions">
   <button data-act="copy">{ICONS['copy']}Copy</button>
   <button data-act="save">{ICONS['save']}<span>Save</span></button>
-  <button data-act="image">{ICONS['image']}Image</button>
   <button data-act="share">{ICONS['share']}Share</button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
