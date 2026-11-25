@@ -230,6 +230,13 @@ ICONS = {
 }
 
 
+def gc_tag():
+    """GoatCounter visitor stats (no cookies). Set "goatcounter" in site.json to the site code."""
+    code = CONFIG.get("goatcounter", "")
+    return (f'\n<script data-goatcounter="https://{code}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
+            if code else "")
+
+
 def page(*, title, desc, body, css, where="", current="", toc_html="", canonical="", extra_head="", ld=""):
     full_title = "The Guybile" if not title else f"{title} · The Guybile"
     site_url = CONFIG.get("site_url", "").rstrip("/")
@@ -258,7 +265,7 @@ def page(*, title, desc, body, css, where="", current="", toc_html="", canonical
 <link rel="manifest" href="manifest.webmanifest">
 <script>(function(){{try{{var d=document.documentElement,t=localStorage.getItem('g-theme'),z=localStorage.getItem('g-size');if(!t&&matchMedia('(prefers-color-scheme: dark)').matches)t='night';if(t)d.dataset.theme=t;if(z)d.dataset.size=z;}}catch(e){{}}}})()</script>
 <style>{css}</style>{extra_head}
-<script src="app.js?v={JS_VER}" defer></script>
+<script src="app.js?v={JS_VER}" defer></script>{gc_tag()}
 </head>
 <body>
 <a class="skip" href="#main">Skip to text</a>

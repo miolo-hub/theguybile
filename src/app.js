@@ -198,8 +198,10 @@
     try { return !!(navigator.canShare && typeof File === "function" &&
       navigator.canShare({ files: [new File([""], "t.png", { type: "image/png" })] })); } catch (e) { return false; }
   }
+  function track(name) { try { window.goatcounter && goatcounter.count({ path: name, title: name, event: true }); } catch (e) {} }
   function shareImage(text, ref, chapter, link) {
     link = link || location.origin;
+    track("share-verse-" + ref);
     var c = drawVerse(text, ref, chapter), name = "guybile-" + ref.replace(":", "-") + ".png";
     c.toBlob(function (blob) {
       var file = typeof File === "function" ? new File([blob], name, { type: "image/png" }) : null;
@@ -411,6 +413,7 @@
       });
     });
     $("cert-share").addEventListener("click", function () {
+      track("share-oath");
       if (certC) shareCanvas(certC, "sworn-brother.png", "Thou art now a Sworn Brother of the Guybile. Swear in thine own: " + new URL("oath.html", location.href).href);
     });
   }
@@ -431,6 +434,7 @@
       if (!b.classList.contains("opt")) return;
       last = Q[step][1][+b.dataset.i][1]; score[last] = (score[last] || 0) + 1; step++;
       if (step < Q.length) { ask(); return; }
+      track("quiz-finished");
       var best = last; Object.keys(score).forEach(function (k) { if (score[k] > score[best]) best = +k; });
       fetch("verses.json").then(function (r) { return r.json(); }).then(function (rows) {
         var pool = rows.filter(function (r) { return r[0].indexOf(best + ":") === 0; });
