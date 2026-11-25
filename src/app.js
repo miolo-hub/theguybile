@@ -535,16 +535,35 @@
   }
 
 
-  /* ---------- Visitor count (GoatCounter public counter) ---------- */
+  /* ---------- Visitor count: rolling odometer (GoatCounter public counter) ---------- */
   (function () {
     var el = $("visits"); if (!el || !el.dataset.gc) return;
-    var cached = store.get("g-visits");
-    if (cached) { el.textContent = cached; el.hidden = false; }
+    function roll(n) {
+      var txt = n.toLocaleString(), calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.setAttribute("aria-label", txt + " brothers have visited");
+      var h = '<span class="odo" aria-hidden="true">';
+      txt.split("").forEach(function (c, i) {
+        if (/\d/.test(c)) {
+          var strip = ""; for (var k = 0; k < 10; k++) strip += "<i>" + k + "</i>";
+          h += '<span class="od"><span class="strip" data-d="' + c + '" style="transition-delay:' + (i * 90) + 'ms">' + strip + "</span></span>";
+        } else h += '<span class="odc">' + c + "</span>";
+      });
+      el.innerHTML = h + '</span><span class="odt" aria-hidden="true"> brothers have visited</span>';
+      el.hidden = false;
+      var go = function () { el.querySelectorAll(".strip").forEach(function (st) { st.style.transform = "translateY(-" + st.dataset.d + "em)"; }); };
+      if (calm) { el.querySelectorAll(".strip").forEach(function (st) { st.style.transition = "none"; }); go(); return; }
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); setTimeout(go, 150); } }, { threshold: 0.6 });
+        io.observe(el);
+      } else go();
+    }
+    var cached = parseInt(store.get("g-visits") || "", 10);
+    if (cached) roll(cached);
     fetch("https://" + el.dataset.gc + ".goatcounter.com/counter/TOTAL.json").then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
       var n = parseInt(String(j.count).replace(/[^0-9]/g, ""), 10);
       if (!n) return;
-      var t = n.toLocaleString() + " brothers have visited";
-      el.textContent = t; el.hidden = false; store.set("g-visits", t);
+      store.set("g-visits", String(n));
+      if (n !== cached) roll(n);
     }).catch(function () {});
   })();
 
