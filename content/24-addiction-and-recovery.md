@@ -26,3 +26,23 @@ title: The Laws of Addiction and Recovery
 24:11 — If thy family is suffering because of thy habit, remember that thou art not a monster. Thou art a man with a problem. Fix it, and thy family will give thee a second chance more often than thou thinkest.
 
 24:12 — Celebrate every sober day, every clean week, every dollar not bet. Small victories add up to a new life.
+
+### Of the Drink, and When to Raise It
+
+24:13 — A beer is for celebration, not for medication. Raise it when the news is good and the company is better. When thou reachest for it to forget, to sleep or to cope, set it down and call a brother instead.
+
+24:14 — Drink with thy friends, not alone against thy feelings. The pint shared over laughter is a different drink from the bottle finished in silence.
+
+24:15 — Eat first, drink slow, and let every drink have a glass of water for a bodyguard.
+
+24:16 — Know thy number before the night beginneth, and stop at it. The best stories are remembered by the man who told them.
+
+24:17 — Keep most days of the week dry. The health books agree on little, but on this they agree: when it cometh to drink, less is better, and none is the healthiest of all.
+
+24:18 — Never drink and drive, never drink on medicines that forbid it, and never drink because someone dared thee. Bravery is saying no in front of the whole table.
+
+24:19 — Never mock the brother who drinketh not. He may be driving, healing, praying, saving, or simply wiser than thee. Buy him a soda and the same respect.
+
+24:20 — Watch for the signs: needing it to relax, hiding how much, drinking in the morning, promising "just one" and never meaning it, or friends going quiet when thou orderest another. These are the doorway to Guybile 24:2. Walk back through it early; it is easier than climbing out later.
+
+24:21 — If thou art under the legal age, wait. Thy brain is still being built, and the beer will still be there when it is finished.
