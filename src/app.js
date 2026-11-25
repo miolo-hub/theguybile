@@ -534,6 +534,20 @@
     });
   }
 
+
+  /* ---------- Visitor count (GoatCounter public counter) ---------- */
+  (function () {
+    var el = $("visits"); if (!el || !el.dataset.gc) return;
+    var cached = store.get("g-visits");
+    if (cached) { el.textContent = cached; el.hidden = false; }
+    fetch("https://" + el.dataset.gc + ".goatcounter.com/counter/TOTAL.json").then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
+      var n = parseInt(String(j.count).replace(/[^0-9]/g, ""), 10);
+      if (!n) return;
+      var t = n.toLocaleString() + " brothers have visited";
+      el.textContent = t; el.hidden = false; store.set("g-visits", t);
+    }).catch(function () {});
+  })();
+
   /* ---------- Offline ---------- */
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });

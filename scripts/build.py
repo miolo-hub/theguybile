@@ -320,6 +320,7 @@ def footer():
         links += [f'<a href="{suggest_url()}">Suggest a verse</a>',
                   f'<a href="https://github.com/{REPO}">Source</a>']
     return (f'<footer class="foot">{" · ".join(links)}<br>'
+            + (f'<span class="visits" id="visits" data-gc="{CONFIG.get("goatcounter")}" hidden></span><br>' if CONFIG.get("goatcounter") else "") +
             "The Guybile is humour and brotherhood, not medical, legal or financial advice.<br>"
             "If thou art in crisis, call thy local emergency number or a crisis line (988 in the US).</footer>")
 

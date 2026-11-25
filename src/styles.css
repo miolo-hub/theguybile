@@ -306,6 +306,8 @@ main { padding: 0 max(1.25rem, env(safe-area-inset-left)) 3rem max(1.25rem, env(
 .swipe-main ~ .foot, .swipe-main + .foot { display: none; }
 body:has(.swipe-main) .foot { display: none; }
 
+.visits { display: inline-block; margin: .5rem 0 .2rem; font: 600 .82rem var(--sans); color: var(--gold); letter-spacing: .02em; }
+
 /* ---------- Old-book art (src/art) ---------- */
 [data-theme="paper"] body { background: var(--bg) url(art/paper.webp) 0 0 / 512px; }
 .cover { background:
