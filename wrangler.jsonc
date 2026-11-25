@@ -4,12 +4,16 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "theguybile",
   "compatibility_date": "2026-11-01",
+  "main": "worker/index.js",
+  "vars": { "GC_CODE": "theguybile" },
   "routes": [
     { "pattern": "theguybile.com/*", "zone_name": "theguybile.com" },
     { "pattern": "www.theguybile.com", "custom_domain": true }
   ],
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash"
   }

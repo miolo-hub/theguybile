@@ -559,7 +559,8 @@
     function all(n) { els.forEach(function (e) { roll(e, n); }); }
     var cached = parseInt(store.get("g-visits") || "", 10);
     if (cached) all(cached);
-    fetch("https://" + els[0].dataset.gc + ".goatcounter.com/counter/TOTAL.json").then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
+    function ok(r) { return r.ok ? r.json() : Promise.reject(); }
+    fetch("/api/visits").then(ok).catch(function () { return fetch("https://" + els[0].dataset.gc + ".goatcounter.com/counter/TOTAL.json").then(ok); }).then(function (j) {
       var n = parseInt(String(j.count).replace(/[^0-9]/g, ""), 10);
       if (!n) return;
       store.set("g-visits", String(n));
