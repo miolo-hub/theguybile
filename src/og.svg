@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs><radialGradient id="g" cx="50%" cy="0%" r="90%"><stop offset="0" stop-color="#4a2a1f"/><stop offset="1" stop-color="#1f100b"/></radialGradient></defs>
+<rect width="1200" height="630" fill="url(#g)"/>
+<rect x="28" y="28" width="1144" height="574" rx="10" fill="none" stroke="#e2c27d" stroke-opacity=".45" stroke-width="2"/>
+<rect x="42" y="42" width="1116" height="546" rx="6" fill="none" stroke="#e2c27d" stroke-opacity=".2" stroke-width="1.5"/>
+<g transform="translate(600 128)" fill="none" stroke="#e2c27d" stroke-width="2"><circle r="38"/><circle r="31" stroke-dasharray="3 4"/><path d="M12 -10A14 14 0 1 0 14 4h-11" stroke-width="4" stroke-linecap="round"/></g>
+<text x="600" y="232" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="20" letter-spacing="7" fill="#e2c27d" fill-opacity=".8" font-weight="700">THE BRO CODE, REWRITTEN AS SCRIPTURE</text>
+<text x="600" y="390" text-anchor="middle" font-family="Iowan Old Style, Palatino, Georgia, serif" font-size="150" font-weight="600" fill="#e2c27d">The Guybile</text>
+<text x="600" y="470" text-anchor="middle" font-family="Iowan Old Style, Palatino, Georgia, serif" font-style="italic" font-size="36" fill="#ead9b6">Funny on the surface, true underneath.</text>
+<text x="600" y="548" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="22" letter-spacing="4" fill="#e2c27d" fill-opacity=".7" font-weight="600">GUYBILE.COM</text>
+</svg>

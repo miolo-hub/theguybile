@@ -1,0 +1,55 @@
+# When the maintainer adds the `accepted` label to a "Suggest a verse" issue,
+# this opens a pull request that adds the verse to the right chapter.
+# Merging that pull request publishes it (see deploy.yml).
+#
+# Only people with write access can add labels, so strangers cannot trigger this.
+name: Accept a verse
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  add:
+    if: github.event.label.name == 'accepted' && contains(github.event.issue.labels.*.name, 'verse')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Add the verse
+        id: add
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: python3 scripts/add_verse.py
+      - name: Check the site still builds
+        run: python3 scripts/build.py
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: verse/issue-${{ github.event.issue.number }}
+          commit-message: "Add Guybile ${{ steps.add.outputs.ref }} (#${{ github.event.issue.number }})"
+          title: "Add Guybile ${{ steps.add.outputs.ref }}"
+          body: |
+            Adds the verse from #${{ github.event.issue.number }} to `content/${{ steps.add.outputs.file }}`.
+            ${{ steps.add.outputs.credit && format('Suggested by {0}.', steps.add.outputs.credit) || '' }}
+
+            Edit the wording in this pull request if it needs a polish, then merge to publish.
+
+            Closes #${{ github.event.issue.number }}
+          add-paths: |
+            content/*.md
+            .github/ISSUE_TEMPLATE/new-verse.yml
+          labels: verse
+      - name: Report failure on the issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body "Could not add this verse automatically. Check the chapter and verse fields, or add it by hand. (See the Actions log.)"
