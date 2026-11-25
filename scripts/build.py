@@ -313,7 +313,8 @@ def page(*, title, desc, body, css, where="", current="", toc_html="", canonical
 
 def footer():
     links = ['<a href="index.html">Home</a>', '<a href="search.html">Search</a>',
-             '<a href="saved.html">Saved</a>', '<a href="credits.html">Authors</a>']
+             '<a href="saved.html">Saved</a>', '<a href="credits.html">Authors</a>',
+             '<a href="about.html">Why Guybile?</a>']
     if REPO:
         links += [f'<a href="{suggest_url()}">Suggest a verse</a>',
                   f'<a href="https://github.com/{REPO}">Source</a>']
@@ -341,6 +342,7 @@ def toc(chapters, appendices):
     items.append('<li class="sep">More</li>')
     items.append('<li><a href="saved.html"><span class="n">★</span>Saved verses</a></li>')
     items.append('<li><a href="credits.html"><span class="n">✎</span>The Authors</a></li>')
+    items.append('<li><a href="about.html"><span class="n">i</span>Why \u201cGuybile\u201d?</a></li>')
     items.append('<li><a href="oath.html"><span class="n">❦</span>Swear in a brother</a></li>')
     items.append('<li><a href="quiz.html"><span class="n">?</span>Which law didst thou break?</a></li>')
     items.append('</ul>')
@@ -486,6 +488,10 @@ def main():
 <h2 class="sec">For thy brothers</h2>
 <ul class="more"><li><a href="oath.html"><b>Swear in a brother</b><span>Make a Sworn Brother certificate to share or print.</span></a></li>
 <li><a href="quiz.html"><b>Which law didst thou break?</b><span>Five questions. One verse. No mercy.</span></a></li></ul>
+<section class="why">
+  <h2 class="sec">Why \u201cGuybile\u201d?</h2>
+  <p>Guy + Bible. The Bro Code, written as scripture. Yes, it is spelled like <em>bile</em>, and yes, that is on purpose. <a href="about.html">Read why.</a></p>
+</section>
 <section class="join">
   <p class="kicker">The Guybile is never finished</p>
   <h2>Write the next verse</h2>
@@ -548,6 +554,20 @@ def main():
 {footer()}"""
     (DIST / "search.html").write_text(page(title="Search", desc="Search every verse of The Guybile.",
                                            body=search, css=css, toc_html=toc_html, canonical="search.html"))
+
+    # ---- about: why Guybile
+    about = f"""<main id="main" data-page="about"><div class="col content">
+<header class="chead"><p class="kicker">The name</p><h1>Why \u201cGuybile\u201d?</h1><div class="orn"><span>Say it: guy-bile</span></div></header>
+<p><strong>Guy + Bible.</strong> The Guybile is the Bro Code rewritten as scripture: the unwritten laws of brotherhood, friendship, food, money, love, plans and the group chat, in the voice of the old books.</p>
+<p><strong>Why not just \u201cBible\u201d?</strong> Because the Bible already has a publisher, a few billion readers and a very good lawyer. This is a book for guys, and it should sound like one.</p>
+<p><strong>Why the \u201ci\u201d, and why does it spell \u201cbile\u201d?</strong> Because it is meant to. Bile is bitter, and so is honest advice. The best verses here start as a joke and end as a truth that stings a little: <em>funny on the surface, true underneath</em>. A misplaced letter also suits a book about men and their plans: close enough to look right, wrong enough to be funny.</p>
+<p><strong>Is it a religion?</strong> No. It borrows the voice of scripture for laughs and kindness, with no offence meant to any faith, and no one is asked to believe anything. Read a verse, argue with it, send it to a brother.</p>
+<p><strong>Is it finished?</strong> Never. Anyone can add a verse, and the maintainer decides what goes in. <a href="{suggest_url()}">Write the next one.</a></p>
+</div></main>
+{footer()}"""
+    (DIST / "about.html").write_text(page(title="Why Guybile?", desc="Guy + Bible. Why The Guybile is spelled the way it is.",
+                                          body=about, css=css, toc_html=toc_html, canonical="about.html"))
+    pages.append("about.html")
 
     # ---- oath certificate (drawn on the reader's device; names never leave it)
     oath = f"""<main id="main" data-page="oath"><div class="col">

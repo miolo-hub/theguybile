@@ -275,6 +275,10 @@ main { padding: 0 max(1.25rem, env(safe-area-inset-left)) 3rem max(1.25rem, env(
 .more a span { font: .88rem var(--sans); color: var(--ink-2); }
 @media print { body:has(.cert) * { visibility: hidden; } .cert, .cert img { visibility: visible; } .cert { position: absolute; inset: 0; margin: 0; max-width: none; } .cert img { box-shadow: none; } .cert .dact { display: none; } }
 
+.why { max-width: var(--measure); margin: 0 auto; text-align: center; }
+.why p { margin: 0; color: var(--ink-2); }
+.why a { color: var(--red); }
+
 /* ---------- Old-book art (src/art) ---------- */
 [data-theme="paper"] body { background: var(--bg) url(art/paper.webp) 0 0 / 512px; }
 .cover { background:
