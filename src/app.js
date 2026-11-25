@@ -537,9 +537,9 @@
 
   /* ---------- Visitor count: rolling odometer (GoatCounter public counter) ---------- */
   (function () {
-    var el = $("visits"); if (!el || !el.dataset.gc) return;
-    function roll(n) {
-      var txt = n.toLocaleString(), calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var els = [].slice.call(d.querySelectorAll(".visits")); if (!els.length || !els[0].dataset.gc) return;
+    function roll(el, n) {
+      var txt = n.toLocaleString(), calm = matchMedia("(prefers-reduced-motion: reduce)").matches, compact = el.hasAttribute("data-compact");
       el.setAttribute("aria-label", txt + " brothers have visited");
       var h = '<span class="odo" aria-hidden="true">';
       txt.split("").forEach(function (c, i) {
@@ -548,22 +548,22 @@
           h += '<span class="od"><span class="strip" data-d="' + c + '" style="transition-delay:' + (i * 90) + 'ms">' + strip + "</span></span>";
         } else h += '<span class="odc">' + c + "</span>";
       });
-      el.innerHTML = h + '</span><span class="odt" aria-hidden="true"> brothers have visited</span>';
+      el.innerHTML = h + "</span>" + (compact ? "" : '<span class="odt" aria-hidden="true"> brothers have visited</span>');
       el.hidden = false;
       var go = function () { el.querySelectorAll(".strip").forEach(function (st) { st.style.transform = "translateY(-" + st.dataset.d + "em)"; }); };
       if (calm) { el.querySelectorAll(".strip").forEach(function (st) { st.style.transition = "none"; }); go(); return; }
-      if ("IntersectionObserver" in window) {
-        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); setTimeout(go, 150); } }, { threshold: 0.6 });
-        io.observe(el);
-      } else go();
+      if (compact || !("IntersectionObserver" in window)) { setTimeout(go, 250); return; }
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); setTimeout(go, 150); } }, { threshold: 0.6 });
+      io.observe(el);
     }
+    function all(n) { els.forEach(function (e) { roll(e, n); }); }
     var cached = parseInt(store.get("g-visits") || "", 10);
-    if (cached) roll(cached);
-    fetch("https://" + el.dataset.gc + ".goatcounter.com/counter/TOTAL.json").then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
+    if (cached) all(cached);
+    fetch("https://" + els[0].dataset.gc + ".goatcounter.com/counter/TOTAL.json").then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
       var n = parseInt(String(j.count).replace(/[^0-9]/g, ""), 10);
       if (!n) return;
       store.set("g-visits", String(n));
-      if (n !== cached) roll(n);
+      if (n !== cached) all(n);
     }).catch(function () {});
   })();
 

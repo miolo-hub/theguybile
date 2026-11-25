@@ -230,6 +230,11 @@ ICONS = {
 }
 
 
+def top_visits():
+    code = CONFIG.get("goatcounter", "")
+    return (f'<span class="visits hv" data-gc="{code}" data-compact title="Brothers who have visited" hidden></span>' if code else "")
+
+
 def gc_tag():
     """GoatCounter visitor stats (no cookies). Set "goatcounter" in site.json to the site code."""
     code = CONFIG.get("goatcounter", "")
@@ -271,7 +276,7 @@ def page(*, title, desc, body, css, where="", current="", toc_html="", canonical
 <a class="skip" href="#main">Skip to text</a>
 <header class="bar" id="bar">
   <button class="btn" id="open-toc" aria-label="Contents" aria-controls="toc" aria-expanded="false">{ICONS['menu']}</button>
-  <a class="brand" href="index.html">The <b>Guybile</b></a>
+  <a class="brand" href="index.html">The <b>Guybile</b></a>{top_visits()}
   <div class="where">{esc(where)}</div>
   <a class="btn" href="search.html" aria-label="Search verses">{ICONS['search']}</a>
   <button class="btn" id="open-set" aria-label="Reading settings" aria-controls="settings" aria-expanded="false"><span style="font-family:var(--serif);font-size:1.1rem">Aa</span></button>
@@ -320,7 +325,7 @@ def footer():
         links += [f'<a href="{suggest_url()}">Suggest a verse</a>',
                   f'<a href="https://github.com/{REPO}">Source</a>']
     return (f'<footer class="foot">{" · ".join(links)}<br>'
-            + (f'<span class="visits" id="visits" data-gc="{CONFIG.get("goatcounter")}" hidden></span><br>' if CONFIG.get("goatcounter") else "") +
+            + (f'<span class="visits" data-gc="{CONFIG.get("goatcounter")}" hidden></span><br>' if CONFIG.get("goatcounter") else "") +
             "The Guybile is humour and brotherhood, not medical, legal or financial advice.<br>"
             "If thou art in crisis, call thy local emergency number or a crisis line (988 in the US).</footer>")
 
