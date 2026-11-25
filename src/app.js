@@ -216,6 +216,18 @@
     }, "image/png");
   }
 
+  /* ---------- Share the whole site with thy bros ---------- */
+  d.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest("[data-share-site]")) return;
+    var site = new URL("./", location.href).href, text = "The Guybile: the Bro Code, rewritten as scripture. Funny on the surface, true underneath. Read it, brother:";
+    track("share-site");
+    if (navigator.share) { navigator.share({ title: "The Guybile", text: text, url: site }).catch(function () {}); return; }
+    var wa = "https://wa.me/?text=" + encodeURIComponent(text + " " + site);
+    (navigator.clipboard ? navigator.clipboard.writeText(text + " " + site) : Promise.reject()).then(
+      function () { say("Link copied. Paste it to thy bros."); },
+      function () { window.open(wa, "_blank", "noopener"); });
+  });
+
   /* ---------- Chapter tools: share page, listen ---------- */
   var sharePage = $("share-page");
   if (sharePage) sharePage.addEventListener("click", function () {

@@ -279,6 +279,12 @@ main { padding: 0 max(1.25rem, env(safe-area-inset-left)) 3rem max(1.25rem, env(
 .why p { margin: 0; color: var(--ink-2); }
 .why a { color: var(--red); }
 
+.bros { margin: 1.1rem 0 0; }
+.sharebros { appearance: none; background: none; border: 0; cursor: pointer; color: var(--gilt); font: 600 .9rem var(--sans); display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1rem; min-height: 2.75rem; border-radius: 2rem; opacity: .92; }
+.sharebros:hover { background: rgba(255,255,255,.08); }
+.sharebros svg { width: 1.05rem; height: 1.05rem; }
+.linkbtn { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
+
 /* ---------- Old-book art (src/art) ---------- */
 [data-theme="paper"] body { background: var(--bg) url(art/paper.webp) 0 0 / 512px; }
 .cover { background:

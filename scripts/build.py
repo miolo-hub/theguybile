@@ -314,7 +314,8 @@ def page(*, title, desc, body, css, where="", current="", toc_html="", canonical
 def footer():
     links = ['<a href="index.html">Home</a>', '<a href="search.html">Search</a>',
              '<a href="saved.html">Saved</a>', '<a href="credits.html">Authors</a>',
-             '<a href="about.html">Why Guybile?</a>']
+             '<a href="about.html">Why Guybile?</a>',
+             '<button class="linkbtn" data-share-site>Share with thy bros</button>']
     if REPO:
         links += [f'<a href="{suggest_url()}">Suggest a verse</a>',
                   f'<a href="https://github.com/{REPO}">Source</a>']
@@ -460,6 +461,7 @@ def main():
       <a class="ghost" id="continue" href="#" hidden>Continue reading</a>
       <a class="ghost" href="#contents" id="browse">Browse chapters</a>
     </div>
+    <p class="bros"><button class="sharebros" data-share-site>{ICONS['share']}<span>Share with thy bros</span></button></p>
   </div>
 </section>
 <div style="padding:0 1.25rem">
