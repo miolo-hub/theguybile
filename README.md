@@ -2,7 +2,9 @@
 
 *The Bro Code, rewritten as scripture. Funny on the surface, true underneath.*
 
-This repository is the book and the website. The 29 chapters and 3 appendices live as plain text in [`content/`](content). Anyone can suggest new verses (see [CONTRIBUTING.md](CONTRIBUTING.md)), and merged changes go live automatically.
+The official home of The Guybile is **[theguybile.com](https://theguybile.com)**. This repository holds its book and website source. The 29 chapters and 3 appendices live as plain text in [`content/`](content). Anyone can suggest new verses (see [CONTRIBUTING.md](CONTRIBUTING.md)), and merged changes go live on theguybile.com automatically.
+
+This repository is open for contributions, not for re-hosting. Please don't publish copies of the site elsewhere; send verses here instead.
 
 ## The website
 
@@ -13,9 +15,9 @@ This repository is the book and the website. The 29 chapters and 3 appendices li
 - Search, a verse of the day, and "Continue reading" from where you left off.
 - It works offline after the first visit, and it can be installed to the home screen.
 
-## Build it locally
+## Preview your change locally
 
-You only need Python 3.9 or newer.
+Optional. You only need Python 3.9 or newer.
 
 ```bash
 python3 scripts/build.py
@@ -26,16 +28,6 @@ python3 -m http.server 8417 --directory dist
 ```
 
 Then open http://localhost:8417.
-
-## Put it online (one-time setup)
-
-1. Create a **public** repository on GitHub and push this folder to `main`.
-2. In the repository, go to **Settings → Pages → Build and deployment** and set **Source** to **GitHub Actions**.
-3. In **Settings → Actions → General → Workflow permissions**, tick **Allow GitHub Actions to create and approve pull requests**.
-4. In **Issues → Labels**, create two labels: `verse` and `accepted`.
-5. Optional: set `site_url` in [`site.json`](site.json) to the final address (for example `https://yourname.github.io/the-guybile`) so link previews look right.
-
-From then on, every merge to `main` updates the site.
 
 ## Files
 
