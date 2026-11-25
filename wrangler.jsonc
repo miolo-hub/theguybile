@@ -5,7 +5,7 @@
   "name": "theguybile",
   "compatibility_date": "2026-11-01",
   "routes": [
-    { "pattern": "theguybile.com", "custom_domain": true },
+    { "pattern": "theguybile.com/*", "zone_name": "theguybile.com" },
     { "pattern": "www.theguybile.com", "custom_domain": true }
   ],
   "assets": {
