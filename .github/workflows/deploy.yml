@@ -25,6 +25,11 @@ jobs:
           python-version: "3.12"
       - name: Build
         run: python3 scripts/build.py
+      - name: Draw verse preview cards
+        run: |
+          sudo apt-get install -y -qq fonts-ebgaramond >/dev/null || true
+          pip install -q pillow
+          python3 scripts/verse_cards.py
       - name: Upload site
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3

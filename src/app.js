@@ -96,7 +96,7 @@
     var t = c.textContent.trim();
     return (/^["“]/.test(t) ? t : "“" + t + "”") + " — Guybile " + v.dataset.ref;
   }
-  function verseUrl(v) { return location.href.split("#")[0] + "#" + v.id; }
+  function verseUrl(v) { return new URL("v/" + v.dataset.ref.replace(":", "-") + ".html", location.href).href; }
   d.addEventListener("click", function (e) {
     var v = e.target.closest && e.target.closest(".v");
     if (e.target.closest && (e.target.closest("a.ref") || e.target.closest(".vact"))) return;
@@ -193,7 +193,7 @@
     x.fillText(location.hostname && location.hostname !== "localhost" ? location.hostname.toUpperCase() : "GUYBILE.COM", W / 2, H - 110);
     return c;
   }
-  function vlink(v) { return new URL(v[1] + ".html#v" + v[0].replace(":", "-"), location.href).href; }
+  function vlink(v) { return new URL("v/" + v[0].replace(":", "-") + ".html", location.href).href; }
   function canShareFiles() {
     try { return !!(navigator.canShare && typeof File === "function" &&
       navigator.canShare({ files: [new File([""], "t.png", { type: "image/png" })] })); } catch (e) { return false; }

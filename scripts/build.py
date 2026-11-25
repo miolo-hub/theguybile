@@ -552,6 +552,36 @@ def main():
                 verses.append([f"{b['ch']}:{b['v']}", c["slug"], c["title"], txt])
     (DIST / "verses.json").write_text(json.dumps(verses, ensure_ascii=False, separators=(",", ":")))
 
+    # ---- one tiny page per verse, so a shared link previews that verse's card
+    #      (the card images themselves are drawn by scripts/verse_cards.py)
+    vdir = DIST / "v"
+    vdir.mkdir(exist_ok=True)
+    base = CONFIG.get("site_url", "").rstrip("/")
+    for ref, slug, ctitle, txt in verses:
+        key = ref.replace(":", "-")
+        target = f"{slug}.html#v{key}"
+        title = f"Guybile {ref}"
+        desc = esc(txt[:200])
+        img = f"{base}/v/{key}.jpg" if base else f"{key}.jpg"
+        (vdir / f"{key}.html").write_text(f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title)} · The Guybile</title>
+<meta name="description" content="{desc}">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{base}/{target}">
+<meta property="og:type" content="article"><meta property="og:site_name" content="The Guybile">
+<meta property="og:title" content="{esc(title)} · {esc(ctitle)}">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{base}/v/{key}.html">
+<meta property="og:image" content="{img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{img}">
+<meta http-equiv="refresh" content="0; url=../{target}">
+<script>location.replace("../{target}")</script>
+<style>body{{font:1.2rem/1.6 Georgia,serif;background:#f5eedf;color:#2b241d;max-width:34rem;margin:4rem auto;padding:0 1.25rem}}a{{color:#9a2a1c}}</style>
+</head><body><p>{esc(txt)}</p><p><a href="../{target}">{esc(title)} — read it in The Guybile</a></p></body></html>
+""")
+
     # ---- static assets
     for f in ("app.js", "icon.svg", "icon-192.png", "icon-512.png", "og.jpg"):
         if (SRC / f).exists():
