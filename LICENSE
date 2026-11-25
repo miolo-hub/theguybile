@@ -1,0 +1,42 @@
+The Guybile
+Copyright (c) 2026 miolo-hub, maintainer of theguybile.com. All rights reserved.
+
+The official and only authorised home of The Guybile is https://theguybile.com.
+
+1. What you may do
+
+   - Read the book and the website.
+   - Share links to the website and to individual verses.
+   - Share single verses, or images of single verses made with the website's
+     own share tools, on social media and in messages, with credit to
+     "The Guybile" or a link to theguybile.com.
+   - Fork this repository on GitHub only to propose changes back to it
+     through pull requests.
+
+2. What you may not do without written permission from the copyright holder
+
+   - Host, mirror or publish the website, the book, or a substantial part of
+     either anywhere else.
+   - Sell, print or publish the book or its verses, in any form.
+   - Make or sell merchandise, apps or other products that use the name
+     "The Guybile", its verses or its artwork.
+   - Use the name "The Guybile" for another site, book or product.
+
+3. Contributions
+
+   By submitting a verse, edit or other contribution (through an issue, a pull
+   request or any other way), you confirm that it is your own original work,
+   and you grant the copyright holder a perpetual, worldwide, irrevocable,
+   royalty-free licence to use, edit, publish, print, sell and sublicense it as
+   part of The Guybile, in any medium, including printed books and
+   merchandise. You may be credited by the name you give, but you are not
+   entitled to payment. You keep the right to use your own words elsewhere.
+
+4. Code
+
+   The build scripts and website code in this repository may be read and
+   studied. Reusing them for an unrelated project needs written permission.
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. IN NO EVENT SHALL
+THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
+ARISING FROM THE USE OF THE WORK.

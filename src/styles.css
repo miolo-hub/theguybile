@@ -249,7 +249,38 @@ main { padding: 0 max(1.25rem, env(safe-area-inset-left)) 3rem max(1.25rem, env(
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; } }
 
+
+/* ---------- Old-book art (src/art) ---------- */
+[data-theme="paper"] body { background: var(--bg) url(art/paper.webp) 0 0 / 512px; }
+.cover { background:
+    radial-gradient(90% 70% at 50% 45%, rgba(20,8,4,.55), rgba(20,8,4,.15) 70%),
+    url(art/cover.webp) center / cover,
+    linear-gradient(180deg, var(--leather), var(--leather-2)); }
+.orn { flex-direction: column; gap: .35rem; max-width: none; }
+.orn::before, .orn::after { flex: none; height: auto; background: none; opacity: 1; }
+.orn::before, .fl, .oath::before, .oath::after, .home h2.sec::after {
+  content: ""; display: block; margin-inline: auto; background: var(--gold);
+  -webkit-mask: url(art/fleuron.webp) center / contain no-repeat; mask: url(art/fleuron.webp) center / contain no-repeat; }
+.orn::before { width: 13rem; height: 2.6rem; }
+.orn::after { display: none; }
+.orn span { font: 600 .78rem var(--sans); letter-spacing: .08em; color: var(--ink-2); }
+.home h2.sec::after { width: 8rem; height: 1.6rem; margin-top: .45rem; opacity: .85; }
+.oath { border-block: 0; padding-block: .5em; }
+.oath::before, .oath::after { width: 11rem; height: 2.2rem; opacity: .8; }
+.oath::before { margin-bottom: 1em; }
+.oath::after { margin-top: 1.1em; transform: scaleY(-1); }
+.dc { float: left; font-size: 3.6em; line-height: .82; font-weight: 600; color: var(--red); padding: .06em .1em 0 0; margin-top: .02em; }
+.daily::before, .daily::after { content: ""; position: absolute; width: 3.4rem; height: 3.4rem; background: var(--gold); opacity: .55; pointer-events: none;
+  -webkit-mask: url(art/corner.webp) center / contain no-repeat; mask: url(art/corner.webp) center / contain no-repeat; }
+.daily::before { top: .35rem; left: .35rem; }
+.daily::after { bottom: .35rem; right: .35rem; transform: rotate(180deg); }
+.frontis { margin: 2.75rem auto 0; max-width: 19rem; text-align: center; }
+.frontis img { display: block; width: 100%; height: auto; border-radius: .35rem; box-shadow: 0 14px 34px rgba(40,20,10,.22), 0 0 0 1px var(--rule); }
+.frontis figcaption { font-style: italic; font-size: .92rem; color: var(--ink-2); margin-top: .8rem; }
+[data-theme="night"] .frontis img { filter: brightness(.82) sepia(.15); }
+
 @media print {
+  .daily::before, .daily::after, .frontis { display: none; }
   .bar, .pager, .drawer, .sheet, .scrim, .vact, .toast, .foot, .cta, .daily { display: none !important; }
   body { background: #fff; color: #000; font-size: 11.5pt; }
   .cover { background: none; color: #000; }

@@ -363,6 +363,12 @@ def chapter_ld(sec, front):
     })
 
 
+def dropcap(html_):
+    """Wrap the first letter of the first plain verse in a decorated capital."""
+    return re.sub(r'(<p class="v"[^>]*><a class="num"[^>]*>[^<]*</a>)([A-Za-z])',
+                  r'\1<span class="dc">\2</span>', html_, count=1)
+
+
 def verse_count(sec):
     return sum(1 for b in sec["blocks"] if b["type"] == "verse")
 
@@ -409,7 +415,7 @@ def main():
   <header class="chead"><p class="kicker">{esc(sec['label'])}</p><h1>{esc(sec['title'])}</h1>{sub}
     <div class="tools"><button class="chip" id="listen" hidden>{ICONS['listen']}<span>Listen</span></button><button class="chip" id="share-page">{ICONS['share']}<span>Share chapter</span></button>{print_btn}</div></header>
   <div class="content verses">
-{render_blocks(sec['blocks'], vi, sec['num'] if sec['kind'] == 'chapter' else None)}
+{dropcap(render_blocks(sec['blocks'], vi, sec['num'] if sec['kind'] == 'chapter' else None))}
   </div>
   {contrib}
 </article>
@@ -455,6 +461,9 @@ def main():
     <button class="chip" id="daily-image">{ICONS['image']}<span>Make image</span></button>
   </div>
 </aside>
+<figure class="frontis"><img src="art/frontispiece.webp" width="560" height="840" loading="lazy" decoding="async"
+  alt="Engraving of two friends clasping forearms beneath an ornate arch, with a pizza, a game controller and a phone in the border">
+  <figcaption>Of brothers, and the bond between them.</figcaption></figure>
 </div>
 <div style="padding:0 1.25rem">
 <article class="col content">
@@ -547,6 +556,8 @@ def main():
     for f in ("app.js", "icon.svg", "icon-192.png", "icon-512.png", "og.jpg"):
         if (SRC / f).exists():
             shutil.copy(SRC / f, DIST / f)
+    if (SRC / "art").is_dir():
+        shutil.copytree(SRC / "art", DIST / "art")
     (DIST / "manifest.webmanifest").write_text(json.dumps({
         "name": "The Guybile", "short_name": "Guybile",
         "description": front["tagline"], "start_url": "./index.html", "scope": "./",
@@ -558,7 +569,8 @@ def main():
 
     # ---- service worker: precache everything, version = hash of all output
     assets = pages + [f"app.js?v={JS_VER}", "verses.json", "manifest.webmanifest", "icon.svg"]
-    assets += [f for f in ("icon-192.png",) if (DIST / f).exists()]
+    assets += [f for f in ("icon-192.png", "art/paper.webp", "art/fleuron.webp", "art/corner.webp", "art/cover.webp")
+               if (DIST / f).exists()]
     h = hashlib.sha256()
     for a in sorted(assets):
         h.update((DIST / a.split("?")[0]).read_bytes())
