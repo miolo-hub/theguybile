@@ -190,7 +190,7 @@
     if (chapter) { x.font = "italic 30px " + SERIF; x.fillStyle = "rgba(234,217,182,.8)"; x.fillText(chapter, W / 2, 1128); }
     x.font = "700 24px " + SANS; x.fillStyle = "rgba(226,194,125,.7)";
     if ("letterSpacing" in x) x.letterSpacing = "6px";
-    x.fillText(location.hostname && location.hostname !== "localhost" ? location.hostname.toUpperCase() : "GUYBILE.COM", W / 2, H - 110);
+    x.fillText("THEGUYBILE.COM", W / 2, H - 110);
     return c;
   }
   function vlink(v) { return new URL("v/" + v[0].replace(":", "-") + ".html", location.href).href; }
@@ -337,6 +337,111 @@
     var t; q.addEventListener("input", function () { clearTimeout(t); t = setTimeout(run, 80); });
     var pre = new URLSearchParams(location.search).get("q"); if (pre) q.value = pre;
     run(); q.focus();
+  }
+
+
+  /* ---------- Shared: send a canvas as a picture ---------- */
+  function shareCanvas(c, name, text) {
+    c.toBlob(function (blob) {
+      var file = typeof File === "function" ? new File([blob], name, { type: "image/png" }) : null;
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], text: text }).catch(function () {});
+      } else {
+        var a = d.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+        d.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+        say("Image downloaded");
+      }
+    }, "image/png");
+  }
+  function loadImg(src) {
+    return new Promise(function (ok) { var i = new Image(); i.onload = function () { ok(i); }; i.onerror = function () { ok(null); }; i.src = src; });
+  }
+  function tinted(img, w, h, color) { // ink-only mask image -> coloured ornament
+    var o = d.createElement("canvas"); o.width = w; o.height = h;
+    var x = o.getContext("2d"); x.drawImage(img, 0, 0, w, h);
+    x.globalCompositeOperation = "source-in"; x.fillStyle = color; x.fillRect(0, 0, w, h);
+    return o;
+  }
+
+  /* ---------- Oath certificate ---------- */
+  if (page === "oath") {
+    var form = $("oath-form"), certC = null;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = $("o-name").value.trim(), by = $("o-by").value.trim();
+      if (!name) return;
+      Promise.all([loadImg("art/paper.webp"), loadImg("art/corner.webp"), loadImg("art/fleuron.webp")]).then(function (im) {
+        var W = 1080, H = 1350, c = d.createElement("canvas"); c.width = W; c.height = H;
+        var x = c.getContext("2d"), GOLD = "#9a7431", INK = "#2b241d", RED = "#9a2a1c";
+        x.fillStyle = "#f3ead6"; x.fillRect(0, 0, W, H);
+        if (im[0]) { x.fillStyle = x.createPattern(im[0], "repeat"); x.fillRect(0, 0, W, H); }
+        x.strokeStyle = GOLD; x.lineWidth = 3; x.strokeRect(46, 46, W - 92, H - 92);
+        x.lineWidth = 1.5; x.strokeRect(62, 62, W - 124, H - 124);
+        if (im[1]) {
+          var k = tinted(im[1], 230, 230, GOLD);
+          [[0, 0, 1, 1], [W, 0, -1, 1], [0, H, 1, -1], [W, H, -1, -1]].forEach(function (p) {
+            x.save(); x.translate(p[0], p[1]); x.scale(p[2], p[3]); x.drawImage(k, 70, 70); x.restore();
+          });
+        }
+        var fl = im[2] ? tinted(im[2], 420, 140, GOLD) : null;
+        x.textAlign = "center"; x.textBaseline = "alphabetic";
+        x.fillStyle = GOLD; x.font = "700 26px " + SANS;
+        if ("letterSpacing" in x) x.letterSpacing = "9px";
+        x.fillText("THE GUYBILE", W / 2, 230);
+        if ("letterSpacing" in x) x.letterSpacing = "0px";
+        x.fillStyle = "#5e5246"; x.font = "italic 40px " + SERIF; x.fillText("Be it known unto all brothers that", W / 2, 330);
+        var size = 120; do { x.font = "600 " + size + "px " + SERIF; size -= 4; } while (x.measureText(name).width > 820 && size > 40);
+        x.fillStyle = RED; x.fillText(name, W / 2, 470);
+        if (fl) x.drawImage(fl, (W - 420) / 2, 500);
+        x.fillStyle = INK; x.font = "42px " + SERIF; x.fillText("hath sworn the Brother’s Oath and is hereby", W / 2, 700);
+        x.font = "600 64px " + SERIF; x.fillText("A Sworn Brother", W / 2, 790);
+        x.font = "italic 44px " + SERIF; x.fillText("of the Guybile", W / 2, 850);
+        x.fillStyle = "#5e5246"; x.font = "italic 32px " + SERIF;
+        ["I will show up.", "I will tell the truth, even when it is awkward.", "I will listen more than I fix.", "I will ask for help, and give it back."]
+          .forEach(function (l, i) { x.fillText(l, W / 2, 950 + i * 46); });
+        var when = new Date().toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
+        x.fillStyle = INK; x.font = "30px " + SERIF;
+        x.fillText((by ? "Sworn in by " + by + " · " : "Sworn on ") + when, W / 2, 1190);
+        x.fillStyle = GOLD; x.font = "600 24px " + SANS; x.fillText("theguybile.com", W / 2, 1250);
+        certC = c;
+        $("cert-img").src = c.toDataURL("image/png");
+        $("cert").hidden = false;
+        $("cert").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+    $("cert-share").addEventListener("click", function () {
+      if (certC) shareCanvas(certC, "sworn-brother.png", "Thou art now a Sworn Brother of the Guybile. Swear in thine own: " + new URL("oath.html", location.href).href);
+    });
+  }
+
+  /* ---------- Quiz ---------- */
+  if (page === "quiz") {
+    var Q = JSON.parse($("quiz-data").textContent), box = $("quiz"), score = {}, step = 0, last = 0;
+    var esc_ = function (t) { var e = d.createElement("i"); e.textContent = t; return e.innerHTML; };
+    var ask = function () {
+      var q = Q[step];
+      box.innerHTML = '<p class="qn">Question ' + (step + 1) + ' of ' + Q.length + '</p><h2>' + esc_(q[0]) + '</h2><div class="opts">' +
+        q[1].map(function (o, i) { return '<button class="opt" data-i="' + i + '">' + esc_(o[0]) + '</button>'; }).join("") + '</div>';
+    };
+    box.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      if (b.id === "q-again") { score = {}; step = 0; ask(); return; }
+      if (b.id === "q-share") { var r = box._row; shareImage(r[3], r[0], r[2], vlink(r)); return; }
+      if (!b.classList.contains("opt")) return;
+      last = Q[step][1][+b.dataset.i][1]; score[last] = (score[last] || 0) + 1; step++;
+      if (step < Q.length) { ask(); return; }
+      var best = last; Object.keys(score).forEach(function (k) { if (score[k] > score[best]) best = +k; });
+      fetch("verses.json").then(function (r) { return r.json(); }).then(function (rows) {
+        var pool = rows.filter(function (r) { return r[0].indexOf(best + ":") === 0; });
+        var row = pool[Math.floor(Math.random() * pool.length)] || rows[0];
+        box._row = row;
+        box.innerHTML = '<p class="qn">The Guybile hath spoken. Thou hast broken</p><h2 class="qres"><a href="' + row[1] + '.html#v' + row[0].replace(":", "-") + '">Guybile ' + row[0] + '</a></h2>' +
+          '<blockquote>' + esc_(row[3]) + '</blockquote><p class="meta">' + esc_(row[2]) + '</p>' +
+          '<div class="dact"><button class="chip" id="q-share">Share result</button><a class="chip" href="' + row[1] + '.html">Read the chapter</a><button class="chip" id="q-again">Take it again</button></div>';
+      });
+    });
+    ask();
   }
 
   /* ---------- Offline ---------- */

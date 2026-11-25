@@ -334,6 +334,8 @@ def toc(chapters, appendices):
     items.append('<li class="sep">More</li>')
     items.append('<li><a href="saved.html"><span class="n">★</span>Saved verses</a></li>')
     items.append('<li><a href="credits.html"><span class="n">✎</span>The Authors</a></li>')
+    items.append('<li><a href="oath.html"><span class="n">❦</span>Swear in a brother</a></li>')
+    items.append('<li><a href="quiz.html"><span class="n">?</span>Which law didst thou break?</a></li>')
     items.append('</ul>')
     return "".join(items)
 
@@ -474,6 +476,9 @@ def main():
 <ul class="grid">{''.join(card(c) for c in chapters)}</ul>
 <h2 class="sec">The Appendices</h2>
 <ul class="grid">{''.join(card(a) for a in appendices)}</ul>
+<h2 class="sec">For thy brothers</h2>
+<ul class="more"><li><a href="oath.html"><b>Swear in a brother</b><span>Make a Sworn Brother certificate to share or print.</span></a></li>
+<li><a href="quiz.html"><b>Which law didst thou break?</b><span>Five questions. One verse. No mercy.</span></a></li></ul>
 <section class="join">
   <p class="kicker">The Guybile is never finished</p>
   <h2>Write the next verse</h2>
@@ -536,6 +541,42 @@ def main():
 {footer()}"""
     (DIST / "search.html").write_text(page(title="Search", desc="Search every verse of The Guybile.",
                                            body=search, css=css, toc_html=toc_html, canonical="search.html"))
+
+    # ---- oath certificate (drawn on the reader's device; names never leave it)
+    oath = f"""<main id="main" data-page="oath"><div class="col">
+<header class="chead"><p class="kicker">The Brother's Oath</p><h1>Swear in a brother</h1><div class="orn"><span>A certificate for thy brother</span></div></header>
+<form class="form" id="oath-form" autocomplete="off">
+  <label>Thy brother's name<input id="o-name" maxlength="40" required placeholder="e.g. Rahul"></label>
+  <label>Sworn in by <small>(optional)</small><input id="o-by" maxlength="40" placeholder="Thy name"></label>
+  <button class="primary" type="submit">Make the certificate</button>
+  <p class="meta">Names stay on this device. Nothing is sent anywhere.</p>
+</form>
+<figure class="cert" id="cert" hidden><img id="cert-img" alt="Oath certificate"><div class="dact">
+  <button class="chip" id="cert-share">{ICONS['share']}<span>Share</span></button>
+  <button class="chip" id="cert-print" onclick="print()">{ICONS['copy']}<span>Print</span></button></div></figure>
+</div></main>
+{footer()}"""
+    (DIST / "oath.html").write_text(page(title="Swear in a brother", desc="Make a Sworn Brother of the Guybile certificate for thy friend.",
+                                         body=oath, css=css, toc_html=toc_html, canonical="oath.html"))
+    pages.append("oath.html")
+
+    # ---- quiz
+    quiz_q = [
+        ["A brother texts \u201cu up?\u201d at 2 a.m. Thou\u2026", [["Leavest him on read till morning", 13], ["Callest. It is a crisis or a story.", 1], ["Sendest a meme instead", 18], ["Askest if he hath eaten", 3]]],
+        ["The plan was \u201c8 p.m. sharp.\u201d Thou arrivest\u2026", [["At 8:00, alone, and furious", 22], ["At 9:40, with snacks", 3], ["\u201cOn my way\u201d (still in the shower)", 2], ["Never. Cancelled at 7:58.", 21]]],
+        ["Thy bank balance is best described as\u2026", [["A mystery I choose not to solve", 6], ["A gadget I did not need", 15], ["A road trip", 16], ["Fine. I have a spreadsheet.", 23]]],
+        ["Most of thy screen time last week went to\u2026", [["The group chat", 13], ["Dating apps", 19], ["Games", 14], ["Doomscrolling", 18]]],
+        ["When life goes wrong, thou\u2026", [["Hittest the gym", 9], ["Sayest \u201cI\u2019m fine\u201d for three months", 8], ["Callest a brother", 1], ["Apologisest and fixest it", 27]]],
+    ]
+    quiz = f"""<main id="main" data-page="quiz"><div class="col">
+<header class="chead"><p class="kicker">Five questions</p><h1>Which law didst thou break?</h1><div class="orn"><span>Answer honestly. The Guybile knoweth.</span></div></header>
+<div id="quiz" class="quiz"></div>
+<script type="application/json" id="quiz-data">{_ld(quiz_q)}</script>
+</div></main>
+{footer()}"""
+    (DIST / "quiz.html").write_text(page(title="Which law didst thou break?", desc="Five questions. One verse. Find the law of The Guybile thou hast broken.",
+                                         body=quiz, css=css, toc_html=toc_html, canonical="quiz.html"))
+    pages.append("quiz.html")
 
     (DIST / "404.html").write_text(page(title="Lost", desc="Page not found.", css=css, toc_html=toc_html, body=f"""
 <main id="main" data-page="404"><div class="col content" style="text-align:center;padding-top:3rem">

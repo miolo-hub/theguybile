@@ -45,6 +45,10 @@ An optional opening paragraph.
 - `- item` and `1. item` make lists, and `| a | b |` lines make a table.
 - To start a new chapter, add a file named with the next number (for example `30-pets.md`) and use `label: Chapter 30`.
 
+## Thy rights and ours
+
+By sending a verse or edit, thou confirmest it is thine own words, and thou lettest The Guybile publish, edit and sell it as part of the book (including printed copies and merch). Thou art credited by the name thou givest. See [LICENSE](LICENSE).
+
 ## What makes a good verse
 
 - **Funny on the surface, true underneath.** The best verses start as a joke and end as advice.

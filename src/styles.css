@@ -250,6 +250,31 @@ main { padding: 0 max(1.25rem, env(safe-area-inset-left)) 3rem max(1.25rem, env(
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; } }
 
 
+
+/* ---------- Oath certificate & quiz ---------- */
+.form { display: grid; gap: 1rem; max-width: 26rem; margin: 0 auto; font-family: var(--sans); }
+.form label { display: grid; gap: .35rem; font: 600 .9rem var(--sans); color: var(--ink-2); }
+.form input { font: 400 1.1rem var(--serif); padding: .75rem .9rem; border: 1px solid var(--rule); border-radius: .6rem; background: var(--card); color: var(--ink); min-height: 2.9rem; }
+.form .primary, .opt { appearance: none; border: 0; cursor: pointer; font: 600 1rem var(--sans); border-radius: 2rem; min-height: 3rem; padding: .8rem 1.3rem; }
+.form .primary { background: var(--leather); color: var(--gilt); }
+.cert { margin: 2rem auto 0; max-width: 28rem; text-align: center; }
+.cert img { width: 100%; height: auto; border-radius: .3rem; box-shadow: 0 14px 34px rgba(40,20,10,.22); }
+.cert .dact, .quiz .dact { justify-content: center; margin-top: 1rem; }
+.quiz { max-width: 30rem; margin: 0 auto; text-align: center; }
+.quiz .qn { font: 700 .72rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin: 0 0 .6rem; }
+.quiz h2 { font-weight: 600; font-size: 1.45em; line-height: 1.3; margin: 0 0 1.4rem; text-wrap: balance; }
+.quiz .opts { display: grid; gap: .7rem; }
+.opt { background: var(--card); color: var(--ink); border: 1px solid var(--rule); text-align: left; border-radius: .8rem; font: 400 1.02rem var(--serif); }
+.opt:hover { background: var(--bg-2); border-color: var(--gold); }
+.qres a { color: var(--red); text-decoration: none; }
+.quiz blockquote { font-size: 1.15em; line-height: 1.55; margin: 0 0 .5rem; }
+.quiz a.chip { text-decoration: none; color: inherit; }
+.more { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .8rem; max-width: 46rem; margin: 0 auto; padding: 0; list-style: none; }
+.more a { display: block; padding: 1.1rem 1.2rem; border: 1px solid var(--rule); border-radius: .9rem; background: var(--card); text-decoration: none; color: var(--ink); }
+.more a b { display: block; font-weight: 600; font-size: 1.1em; }
+.more a span { font: .88rem var(--sans); color: var(--ink-2); }
+@media print { body:has(.cert) * { visibility: hidden; } .cert, .cert img { visibility: visible; } .cert { position: absolute; inset: 0; margin: 0; max-width: none; } .cert img { box-shadow: none; } .cert .dact { display: none; } }
+
 /* ---------- Old-book art (src/art) ---------- */
 [data-theme="paper"] body { background: var(--bg) url(art/paper.webp) 0 0 / 512px; }
 .cover { background:
