@@ -471,8 +471,8 @@ def main():
   </div>
 </aside>
 <figure class="frontis"><img src="art/frontispiece.webp" width="560" height="840" loading="lazy" decoding="async"
-  alt="Engraving of two friends clasping forearms beneath an ornate arch, with a pizza, a game controller and a phone in the border">
-  <figcaption>Of brothers, and the bond between them.</figcaption></figure>
+  alt="Engraving of four laughing friends at a feast table, raising tankards in a toast, one biting a slice of pizza">
+  <figcaption>And on the seventh day, the boys ordered pizza.</figcaption></figure>
 </div>
 <div style="padding:0 1.25rem">
 <article class="col content">
